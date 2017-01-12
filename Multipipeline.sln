@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Anobaka.Multipipeline", "src\Anobaka.Multipipeline\Anobaka.Multipipeline.xproj", "{81A94E14-B026-45FE-AF22-6E6E5E20B99C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{25B9C683-97B5-41BC-8277-35C3FA3590B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A0CD6262-113D-4ED2-AF78-4B7AF64173BC}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7C90330F-D65F-44B2-8433-74378FEDC888}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MultipipelineSample.Web", "samples\MultipipelineSample.Web\MultipipelineSample.Web.xproj", "{A9B2E3D8-3081-45D4-ABC7-50929D2F237E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81A94E14-B026-45FE-AF22-6E6E5E20B99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81A94E14-B026-45FE-AF22-6E6E5E20B99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81A94E14-B026-45FE-AF22-6E6E5E20B99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81A94E14-B026-45FE-AF22-6E6E5E20B99C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9B2E3D8-3081-45D4-ABC7-50929D2F237E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9B2E3D8-3081-45D4-ABC7-50929D2F237E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9B2E3D8-3081-45D4-ABC7-50929D2F237E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9B2E3D8-3081-45D4-ABC7-50929D2F237E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81A94E14-B026-45FE-AF22-6E6E5E20B99C} = {25B9C683-97B5-41BC-8277-35C3FA3590B3}
+		{A9B2E3D8-3081-45D4-ABC7-50929D2F237E} = {7C90330F-D65F-44B2-8433-74378FEDC888}
+	EndGlobalSection
+EndGlobal

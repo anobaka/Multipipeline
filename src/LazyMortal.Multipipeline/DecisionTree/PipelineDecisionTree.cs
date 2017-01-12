@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Reflection;
 
-namespace Anobaka.Multipipeline.DecisionTree
+namespace LazyMortal.Multipipeline.DecisionTree
 {
 	public class PipelineDecisionTree<TOptions> where TOptions : MultipipelineOptions, new()
 	{

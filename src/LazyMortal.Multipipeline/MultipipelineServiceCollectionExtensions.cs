@@ -1,8 +1,8 @@
 ﻿using System;
-using Anobaka.Multipipeline.DecisionTree;
+using LazyMortal.Multipipeline.DecisionTree;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Anobaka.Multipipeline
+namespace LazyMortal.Multipipeline
 {
 	public static class MultipipelineServiceCollectionExtensions
 	{

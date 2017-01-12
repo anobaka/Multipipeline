@@ -1,4 +1,4 @@
-﻿namespace Anobaka.Multipipeline.DecisionTree
+﻿namespace LazyMortal.Multipipeline.DecisionTree
 {
     public class PipelineDecisionNode
     {

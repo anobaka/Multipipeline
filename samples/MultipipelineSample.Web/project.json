@@ -14,9 +14,9 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
-    "Anobaka.Multipipeline": "1.0.0-*",
     "BundlerMinifier.Core": "2.2.306",
-    "Microsoft.AspNetCore.Session": "1.1.0"
+    "Microsoft.AspNetCore.Session": "1.1.0",
+    "LazyMortal.Multipipeline": "0.0.1-*"
   },
 
   "tools": {

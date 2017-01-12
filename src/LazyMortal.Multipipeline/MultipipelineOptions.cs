@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Anobaka.Multipipeline
+namespace LazyMortal.Multipipeline
 {
     public class MultipipelineOptions
     {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Anobaka.Multipipeline
+namespace LazyMortal.Multipipeline
 {
     public static class HttpContextExtensions
     {

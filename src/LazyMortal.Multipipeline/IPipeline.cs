@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Anobaka.Multipipeline
+namespace LazyMortal.Multipipeline
 {
 	public interface IPipeline
 	{

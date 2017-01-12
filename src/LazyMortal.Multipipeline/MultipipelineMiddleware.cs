@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Anobaka.Multipipeline.DecisionTree;
+using LazyMortal.Multipipeline.DecisionTree;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Anobaka.Multipipeline
+namespace LazyMortal.Multipipeline
 {
 	public class MultipipelineMiddleware<TOptions> where TOptions : MultipipelineOptions, new()
 	{

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using LazyMortal.Multipipeline.DecisionTree;
 using Microsoft.AspNetCore.Builder;
@@ -17,26 +19,33 @@ namespace LazyMortal.Multipipeline
 		private readonly IOptions<TOptions> _options;
 		private readonly IApplicationBuilder _app;
 		private static readonly EventId InformationEventId = new EventId(10000, nameof(MultipipelineMiddleware<TOptions>));
-		private readonly PipelineDecisionTree<TOptions> _decisionTree;
+		private readonly PipelineDecisionTree _decisionTree;
+		private readonly PipelineCollectionAccessor _pipelineCollectionAccessor;
+		private readonly Action<IApplicationBuilder> _defaultConfiguration;
 
 		private readonly ConcurrentDictionary<IPipeline, Lazy<RequestDelegate>> _pipelines =
 			new ConcurrentDictionary<IPipeline, Lazy<RequestDelegate>>();
 
+		private RequestDelegate _defaultRequestDelegate;
+
 		public MultipipelineMiddleware(RequestDelegate next, IApplicationBuilder app, ILoggerFactory loggerFactory,
-			IOptions<TOptions> options, PipelineDecisionTree<TOptions> decisionTree)
+			IOptions<TOptions> options, PipelineDecisionTree decisionTree,
+			PipelineCollectionAccessor pipelineCollectionAccessor, Action<IApplicationBuilder> defaultConfiguration)
 		{
 			_next = next;
 			_logger = loggerFactory.CreateLogger(nameof(MultipipelineMiddleware<TOptions>));
 			_options = options;
 			_decisionTree = decisionTree;
 			_app = app;
+			_pipelineCollectionAccessor = pipelineCollectionAccessor;
+			_defaultConfiguration = defaultConfiguration;
 		}
 
-		public async Task Invoke(HttpContext httpContext)
+		public virtual async Task Invoke(HttpContext httpContext)
 		{
 			var deepestDepth = 0;
 			IPipeline pipeline = null;
-			foreach (var p in _options.Value.Pipelines)
+			foreach (var p in _pipelineCollectionAccessor.Pipelines)
 			{
 				if (await p.ResolveAsync(httpContext))
 				{
@@ -51,7 +60,7 @@ namespace LazyMortal.Multipipeline
 			if (pipeline != null)
 			{
 				httpContext.Items[_options.Value.PipelineHttpContextItemKey] = pipeline;
-				_logger.LogInformation(InformationEventId, $"pipeline resolved: {pipeline.Name}");
+				_logger.LogInformation(InformationEventId, $"resolved pipeline: {pipeline.Name}");
 				var requestDelegate = _pipelines.GetOrAdd(pipeline,
 					new Lazy<RequestDelegate>(() =>
 					{
@@ -64,36 +73,15 @@ namespace LazyMortal.Multipipeline
 			}
 			else
 			{
-				await _next(httpContext);
+				if (_defaultRequestDelegate == null && _defaultConfiguration != null)
+				{
+					var builder = _app.New();
+					_defaultConfiguration(builder);
+					builder.Run(_next);
+					_defaultRequestDelegate = builder.Build();
+				}
+				await (_defaultRequestDelegate ?? _next)(httpContext);
 			}
-		}
-	}
-
-	public static class CooperationMiddlewareExtensions
-	{
-		/// <summary>
-		/// use <see cref="MultipipelineOptions"/> as default pipeline options. To use custom options, try <see cref="AddMultipipeline{TOptions}"/>
-		/// </summary>
-		public static IApplicationBuilder AddMultipipeline(this IApplicationBuilder builder)
-		{
-			return builder.AddMultipipeline<MultipipelineOptions>();
-		}
-
-		public static IApplicationBuilder AddMultipipeline<TOptions>(this IApplicationBuilder builder)
-			where TOptions : MultipipelineOptions, new()
-		{
-			var options = (IOptions<TOptions>) builder.ApplicationServices.GetService(typeof(IOptions<TOptions>));
-			if (options == null)
-			{
-				throw new ArgumentNullException(nameof(TOptions),
-					"use services.Configure<TOptions> first");
-			}
-			var decisionTree = builder.ApplicationServices.GetRequiredService<PipelineDecisionTree<TOptions>>();
-			builder.Use(
-				t =>
-					new MultipipelineMiddleware<TOptions>(t, builder,
-						(ILoggerFactory) builder.ApplicationServices.GetService(typeof(ILoggerFactory)), options, decisionTree).Invoke);
-			return builder;
 		}
 	}
 }

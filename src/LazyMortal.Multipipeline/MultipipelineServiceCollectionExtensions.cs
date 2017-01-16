@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using LazyMortal.Multipipeline.DecisionTree;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +12,7 @@ namespace LazyMortal.Multipipeline
 		/// Use <see cref="MultipipelineOptions"/> as default options. To use custom options, try <see cref="AddMultipipeline{TOptions}"/>
 		/// </summary>
 		public static IServiceCollection AddMultipipeline(this IServiceCollection services,
-			Action<MultipipelineOptions> configureAction)
+			Action<MultipipelineOptions> configureAction = null)
 		{
 			return services.AddMultipipeline<MultipipelineOptions>(configureAction);
 		}
@@ -22,7 +24,14 @@ namespace LazyMortal.Multipipeline
 			{
 				services.Configure(configureAction);
 			}
-			services.AddSingleton<PipelineDecisionTree<TOptions>>();
+			services.AddSingleton<PipelineDecisionTree>();
+			var baseType = typeof(IPipeline);
+			var pipelines =
+				Assembly.GetEntryAssembly()
+					.DefinedTypes.Where(t => baseType.IsAssignableFrom(t.AsType()) && !t.IsAbstract)
+					.Select(t => Activator.CreateInstance(t.AsType()) as IPipeline)
+					.ToList();
+			services.AddSingleton(new PipelineCollectionAccessor {Pipelines = pipelines});
 			return services;
 		}
 	}

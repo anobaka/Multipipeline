@@ -40,15 +40,7 @@ namespace MultipipelineSample.Web
 
             services.AddMvc();
 
-	        services.AddMultipipeline(t =>
-	        {
-		        t.Pipelines = new List<IPipeline>
-		        {
-					new DefaultPipeline(),
-			        new APipeline(),
-			        new BPipeline()
-		        };
-	        });
+	        services.AddMultipipeline();
 
 	        services.AddSession();
         }

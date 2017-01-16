@@ -5,22 +5,27 @@ using System.Reflection;
 
 namespace LazyMortal.Multipipeline.DecisionTree
 {
-	public class PipelineDecisionTree<TOptions> where TOptions : MultipipelineOptions, new()
+	public class PipelineDecisionTree
 	{
 		private readonly IDictionary<IPipeline, PipelineDecisionNode> _pipelineNodes;
 
-		public PipelineDecisionTree(IOptions<TOptions> options)
+		public PipelineDecisionTree(PipelineCollectionAccessor pipelineCollectionAccessor)
 		{
-			_pipelineNodes = options.Value.Pipelines?.ToDictionary(t => t, t => new PipelineDecisionNode {Current = t});
+			_pipelineNodes = pipelineCollectionAccessor.Pipelines?.ToDictionary(t => t, t => new PipelineDecisionNode {Current = t});
 			_initTree();
+		}
+
+		public IList<IPipeline> GetPipelinePath(IPipeline pipeline)
+		{
+			return GetPipelinePath<IPipeline>(pipeline);
 		}
 
 		/// <summary>
 		///
 		/// </summary>
 		/// <param name="pipeline"></param>
-		/// <returns><paramref name="pipeline"/> will be set in path</returns>
-		public IList<IPipeline> GetPipelinePath(IPipeline pipeline)
+		/// <returns><paramref name="pipeline"/> will be set in path, order by child > parent</returns>
+		public IList<TCast> GetPipelinePath<TCast>(TCast pipeline) where TCast : IPipeline
 		{
 			var list = new List<IPipeline> {pipeline};
 			var parent = _pipelineNodes[pipeline].Parent;
@@ -29,7 +34,7 @@ namespace LazyMortal.Multipipeline.DecisionTree
 				list.Add(parent.Current);
 				parent = parent.Parent;
 			}
-			return list;
+			return list.Cast<TCast>().ToList();
 		}
 
 		private void _initTree()

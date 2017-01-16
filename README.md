@@ -42,3 +42,7 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerF
 ```
 
 For further information, please see samples in repository.
+
+## Contribution
+
+Please start a discussion on the <a href="https://github.com/LazyMortal/Multipipeline/issues">repo issue tracker</a>.

@@ -14,12 +14,13 @@ namespace MultipipelineSample.Web.Controllers
 
 		public string Index()
 		{
-			return HttpContext.Session.GetString(SessionKey);
-		}
-
-		public void SetSession()
-		{
-			HttpContext.Session.SetString(SessionKey, $"{HttpContext.GetPipeline()?.Name} Session");
+			var flag = HttpContext.Session.GetString(SessionKey);
+			if (string.IsNullOrEmpty(flag))
+			{
+				flag = $"This is session in pipeline: {HttpContext.GetPipeline()?.Name}";
+				HttpContext.Session.SetString(SessionKey, flag);
+			}
+			return flag;
 		}
 	}
 }

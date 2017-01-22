@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1-*",
+  "version": "0.0.3",
   "authors": [
     "Derrick"
   ],
@@ -9,12 +9,14 @@
     "Microsoft.Extensions.Options": "1.1.0",
     "System.Reflection": "4.3.0"
   },
-
   "frameworks": {
     "netstandard1.6": {
       "dependencies": {
         "NETStandard.Library": "1.6.1"
       }
     }
+  },
+  "buildOptions": {
+    "xmlDoc": true
   }
 }

@@ -11,6 +11,8 @@ With `Multipipeline` we can create multiple request pipelines which can have dif
 + Applying different authentication and authorization policies for third parties.
 + ...
 
+## Installation
++ <a href="https://www.nuget.org/packages/LazyMortal.Multipipeline/">Nuget</a>
 
 ## Get Started
 + Startup.cs

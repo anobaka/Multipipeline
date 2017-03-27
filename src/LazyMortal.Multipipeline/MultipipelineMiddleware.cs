@@ -21,7 +21,7 @@ namespace LazyMortal.Multipipeline
 		private static readonly EventId InformationEventId = new EventId(10000, nameof(MultipipelineMiddleware<TOptions>));
 		private readonly PipelineDecisionTree _decisionTree;
 		private readonly PipelineCollectionAccessor _pipelineCollectionAccessor;
-		private readonly Action<IApplicationBuilder> _defaultConfiguration;
+		private readonly Action<IApplicationBuilder> _defaultPipelineConfiguration;
 
 		private readonly ConcurrentDictionary<IPipeline, Lazy<RequestDelegate>> _pipelines =
 			new ConcurrentDictionary<IPipeline, Lazy<RequestDelegate>>();
@@ -30,7 +30,7 @@ namespace LazyMortal.Multipipeline
 
 		public MultipipelineMiddleware(RequestDelegate next, IApplicationBuilder app, ILoggerFactory loggerFactory,
 			IOptions<TOptions> options, PipelineDecisionTree decisionTree,
-			PipelineCollectionAccessor pipelineCollectionAccessor, Action<IApplicationBuilder> defaultConfiguration)
+			PipelineCollectionAccessor pipelineCollectionAccessor, Action<IApplicationBuilder> defaultPipelineConfiguration)
 		{
 			_next = next;
 			_logger = loggerFactory.CreateLogger(nameof(MultipipelineMiddleware<TOptions>));
@@ -38,7 +38,7 @@ namespace LazyMortal.Multipipeline
 			_decisionTree = decisionTree;
 			_app = app;
 			_pipelineCollectionAccessor = pipelineCollectionAccessor;
-			_defaultConfiguration = defaultConfiguration;
+			_defaultPipelineConfiguration = defaultPipelineConfiguration;
 		}
 
 		public virtual async Task Invoke(HttpContext httpContext)
@@ -73,10 +73,10 @@ namespace LazyMortal.Multipipeline
 			}
 			else
 			{
-				if (_defaultRequestDelegate == null && _defaultConfiguration != null)
+				if (_defaultRequestDelegate == null && _defaultPipelineConfiguration != null)
 				{
 					var builder = _app.New();
-					_defaultConfiguration(builder);
+					_defaultPipelineConfiguration(builder);
 					builder.Run(_next);
 					_defaultRequestDelegate = builder.Build();
 				}

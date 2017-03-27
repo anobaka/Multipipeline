@@ -15,21 +15,26 @@ namespace LazyMortal.Multipipeline
 	public static class MultipipelineApplicationBuilderExtensions
 	{
 		/// <summary>
-		/// use <see cref="MultipipelineOptions"/> as default pipeline options. To use custom options, try <see cref="AddMultipipeline{TOptions}"/>
+		/// Use <see cref="MultipipelineOptions"/> as default pipeline options. To use custom options, try <see cref="AddMultipipeline{TOptions}"/>
 		/// </summary>
+		/// <param name="builder"></param>
+		/// <param name="defaultPipelineConfiguration">You can set a default behavior than other pipelines, but it's not a truly pipeline.</param>
+		/// <returns></returns>
 		public static IApplicationBuilder AddMultipipeline(this IApplicationBuilder builder,
-			Action<IApplicationBuilder> defaultConfiguration = null)
+			Action<IApplicationBuilder> defaultPipelineConfiguration = null)
 		{
-			return builder.AddMultipipeline<MultipipelineOptions>(defaultConfiguration);
+			return builder.AddMultipipeline<MultipipelineOptions>(defaultPipelineConfiguration);
 		}
 
 		/// <summary>
-		///
-		/// </summary>
 		/// <typeparam name="TOptions">Options model inheriting from <see cref="MultipipelineOptions"/>, is used for custom features</typeparam>
+		/// </summary>
+		/// <typeparam name="TOptions"></typeparam>
+		/// <param name="builder"></param>
+		/// <param name="defaultPipelineConfiguration">You can set a default behavior than other pipelines, but it's not a truly pipeline.</param>
 		/// <returns></returns>
 		public static IApplicationBuilder AddMultipipeline<TOptions>(this IApplicationBuilder builder,
-			Action<IApplicationBuilder> defaultConfiguration = null)
+			Action<IApplicationBuilder> defaultPipelineConfiguration = null)
 			where TOptions : MultipipelineOptions, new()
 		{
 			var options = builder.ApplicationServices.GetRequiredService<IOptions<TOptions>>();
@@ -40,7 +45,7 @@ namespace LazyMortal.Multipipeline
 				t =>
 					new MultipipelineMiddleware<TOptions>(t, builder,
 							(ILoggerFactory) builder.ApplicationServices.GetService(typeof(ILoggerFactory)), options, decisionTree, pipelines,
-							defaultConfiguration)
+							defaultPipelineConfiguration)
 						.Invoke);
 			return builder;
 		}

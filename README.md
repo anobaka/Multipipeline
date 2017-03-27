@@ -8,7 +8,7 @@ With `Multipipeline` we can create multiple request pipelines which can have dif
 
 ## Common Usages
 + Creating multiple UI skins applications.
-+ Applying different authentication policies and authorization policies for third parties.
++ Applying different authentication and authorization policies for third parties.
 + ...
 
 

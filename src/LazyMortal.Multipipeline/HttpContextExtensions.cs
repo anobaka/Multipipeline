@@ -7,6 +7,11 @@ namespace LazyMortal.Multipipeline
     public static class HttpContextExtensions
     {
 	    private static string _httpContextItemKey;
+		/// <summary>
+		/// Get current pipeline from <see cref="HttpContext.Items"/>. The default key is "Pipeline".
+		/// </summary>
+		/// <param name="ctx">aaaaa</param>
+		/// <returns></returns>
 		public static IPipeline GetPipeline(this HttpContext ctx)
 	    {
 		    if (string.IsNullOrEmpty(_httpContextItemKey))

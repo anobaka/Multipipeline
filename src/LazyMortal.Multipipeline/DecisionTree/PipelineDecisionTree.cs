@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace LazyMortal.Multipipeline.DecisionTree
 {
+	/// <summary>
+	/// Represent the relationships of all pipelines.
+	/// </summary>
 	public class PipelineDecisionTree
 	{
 		private readonly IDictionary<IPipeline, PipelineDecisionNode> _pipelineNodes;
@@ -24,7 +27,7 @@ namespace LazyMortal.Multipipeline.DecisionTree
 		///
 		/// </summary>
 		/// <param name="pipeline"></param>
-		/// <returns><paramref name="pipeline"/> will be set in path, order by child > parent</returns>
+		/// <returns><paramref name="pipeline"/> will be added to the head of path, order by child -> parent</returns>
 		public IList<TCast> GetPipelinePath<TCast>(TCast pipeline) where TCast : IPipeline
 		{
 			var list = new List<IPipeline> {pipeline};

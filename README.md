@@ -15,14 +15,93 @@ With `Multipipeline` we can create multiple request pipelines which can have dif
 + <a href="https://www.nuget.org/packages/LazyMortal.Multipipeline/">Nuget</a>
 
 ## Get Started
-+ Startup.cs
+
+**1. Define your pipelines.**
+
+```
+public class DefaultPipeline : IPipeline
+{
+    public string Id { get; } = "Id-Default";
+    public string ParentId { get; } = null;
+    public virtual string Name { get; set; } = "Default";
+
+    public virtual Task<bool> ResolveAsync(HttpContext ctx)
+    {
+        return Task.FromResult(true);
+    }
+
+    public virtual Task ConfigurePipeline(IApplicationBuilder app)
+    {
+        app.UseSession();
+        return TaskCache.CompletedTask;
+    }
+}
+
+public class APipeline : IPipeline
+{
+    public string Id { get; } = "Id-A";
+    public string ParentId { get; } = "Id-Default";
+    public string Name { get; set; } = "A";
+	public Task<bool> ResolveAsync(HttpContext ctx)
+	{
+		return Task.FromResult(ctx.Request.Query.ContainsKey("a"));
+	}
+
+	public Task ConfigurePipeline(IApplicationBuilder app)
+	{
+		app.UseSession(new SessionOptions {CookieName = nameof(APipeline)});
+		// others' middleware & configuration
+		// eg.
+		//		LoggingMiddleware
+		//		AAuthenticationMiddleware
+		return TaskCache.CompletedTask;
+	}
+}
+
+    public class BPipeline : IPipeline
+{
+	public string Id { get; }
+	public string ParentId { get; }
+	public string Name { get; }
+
+    public BPipeline(string id, string parentId, string name)
+    {
+        Id = id;
+        ParentId = parentId;
+        Name = name;
+    }
+
+	public Task<bool> ResolveAsync(HttpContext ctx)
+	{
+		return Task.FromResult(ctx.Request.Query.ContainsKey(Name));
+	}
+
+	public Task ConfigurePipeline(IApplicationBuilder app)
+	{
+		app.UseSession(new SessionOptions { CookieName = Id });
+		// others' middleware & configuration
+		// eg.
+		//		LoggingMiddleware
+		//		AAuthenticationMiddleware
+		return TaskCache.CompletedTask;
+	}
+}
+```
+
+**2. Register your pipeline instances in Startup.cs.**
 
 ```
 //...
 public void ConfigureServices(IServiceCollection services)
 {
     //other services
-    services.AddMultipipeline();
+    services.AddMultipipeline(new List<IPipeline>
+    {
+        new DefaultPipeline(),
+        new APipeline(),
+        new BPipeline("Id-B1", "Id-A", "B1"),
+        new BPipeline("Id-B2", "Id-Default", "B2")
+    });
 }
 
 public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -33,30 +112,22 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerF
 }
 
 ```
-+ SomePipeline.cs
-```
-public class SomePipeline
-{
-    public override string Name { get; set; } = "A";
-    public override string Parent { get; set; } = "Default";
-    public override Task<bool> ResolveAsync(HttpContext ctx)
-    {
-        return Task.FromResult(ctx.Request.Query.ContainsKey("a"));
-    }
 
-    public override Task ConfigurePipeline(IApplicationBuilder app)
-    {
-        app.UseSession(new SessionOptions {CookieName = nameof(APipeline)});
-        // others' middleware & configuration
-        // eg.
-        //		LoggingMiddleware
-        //		AAuthenticationMiddleware
-        return TaskCache.CompletedTask;
-    }
-}
-```
+**3. Check the behaviors.**
+
++ Access `?a=` it will output the values of session of instance of APipeline.
++ Access `?b1=` it will output the values of session of the `b1` instance of BPipeline.
++ Access `?b2=` it will output the values of session of the `b2` instance of BPipeline.
++ Access others urls it will output the values of session of the instance of DefaultPipeline.
 
 For further information, please see samples in repository.
+
+## Roadmap
+
+|Version|Release Date|Remark|
+|:-----:|:-----:|:-----:|
+|0.0.3|2017-03-27| - |
+|0.1.0|2017-10| - |
 
 ## Release Notes
 

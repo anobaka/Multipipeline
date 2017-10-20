@@ -33,7 +33,13 @@ namespace MultipipelineSample.Web
             // Add framework services.
             services.AddMvc();
 
-	        services.AddMultipipeline();
+            services.AddMultipipeline(new List<IPipeline>
+            {
+                new DefaultPipeline(),
+                new APipeline(),
+                new BPipeline("Id-B1", "Id-A", "B1"),
+                new BPipeline("Id-B2", "Id-Default", "B2")
+            });
 
 	        services.AddSession();
         }

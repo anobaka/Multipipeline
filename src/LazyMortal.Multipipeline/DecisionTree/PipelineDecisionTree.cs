@@ -42,14 +42,14 @@ namespace LazyMortal.Multipipeline.DecisionTree
 
 		private void _initTree()
 		{
-			var types = _pipelineNodes.ToDictionary(t => t.Key, t => t.Key.GetType().GetTypeInfo());
+			//var instances = _pipelineNodes.ToDictionary(t => t.Key, t => t.Key.GetType().GetTypeInfo());
 			foreach (var node in _pipelineNodes)
 			{
 				if (node.Value.Parent == null)
 				{
 					foreach (var otherNode in _pipelineNodes)
 					{
-						if (otherNode.Key != node.Key && types[node.Key].BaseType == otherNode.Key.GetType())
+						if (otherNode.Key != node.Key && node.Key.ParentId == otherNode.Key.Id)
 						{
 							node.Value.Parent = otherNode.Value;
 							break;

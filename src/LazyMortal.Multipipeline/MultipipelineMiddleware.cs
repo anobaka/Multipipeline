@@ -45,22 +45,25 @@ namespace LazyMortal.Multipipeline
 		{
 			var deepestDepth = 0;
 			IPipeline pipeline = null;
-			foreach (var p in _pipelineCollectionAccessor.Pipelines)
-			{
-				if (await p.ResolveAsync(httpContext))
-				{
-					var depth = _decisionTree.GetPipelinePath(p).Count;
-					if (depth > deepestDepth)
-					{
-						pipeline = p;
-						deepestDepth = depth;
-					}
-				}
-			}
+		    if (_pipelineCollectionAccessor.Pipelines?.Any() == true)
+		    {
+		        foreach (var p in _pipelineCollectionAccessor.Pipelines)
+		        {
+		            if (await p.ResolveAsync(httpContext))
+		            {
+		                var depth = _decisionTree.GetPipelinePath(p).Count;
+		                if (depth > deepestDepth)
+		                {
+		                    pipeline = p;
+		                    deepestDepth = depth;
+		                }
+		            }
+		        }
+            }
 			if (pipeline != null)
 			{
 				httpContext.Items[_options.Value.PipelineHttpContextItemKey] = pipeline;
-				_logger.LogInformation(InformationEventId, $"resolved pipeline: {pipeline.Name}");
+				_logger.LogInformation(InformationEventId, $"Resolved pipeline: {pipeline.Name}");
 				var requestDelegate = _pipelines.GetOrAdd(pipeline,
 					new Lazy<RequestDelegate>(() =>
 					{

@@ -9,15 +9,17 @@ using Microsoft.AspNetCore.Mvc.Internal;
 
 namespace MultipipelineSample.Web.Models
 {
-    public class APipeline : DefaultPipeline
+    public class APipeline : IPipeline
     {
-	    public override string Name { get; set; } = "A";
-	    public override Task<bool> ResolveAsync(HttpContext ctx)
+        public string Id { get; } = "Id-A";
+        public string ParentId { get; } = "Id-Default";
+        public string Name { get; set; } = "A";
+	    public Task<bool> ResolveAsync(HttpContext ctx)
 	    {
 			return Task.FromResult(ctx.Request.Query.ContainsKey("a"));
 	    }
 
-		public override Task ConfigurePipeline(IApplicationBuilder app)
+		public Task ConfigurePipeline(IApplicationBuilder app)
 	    {
 		    app.UseSession(new SessionOptions {CookieName = nameof(APipeline)});
 			// others' middleware & configuration

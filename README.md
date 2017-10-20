@@ -35,9 +35,10 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerF
 ```
 + SomePipeline.cs
 ```
-public class SomePipeline : DefaultPipeline
+public class SomePipeline
 {
     public override string Name { get; set; } = "A";
+    public override string Parent { get; set; } = "Default";
     public override Task<bool> ResolveAsync(HttpContext ctx)
     {
         return Task.FromResult(ctx.Request.Query.ContainsKey("a"));
@@ -56,6 +57,18 @@ public class SomePipeline : DefaultPipeline
 ```
 
 For further information, please see samples in repository.
+
+## Release Notes
+
+### 0.1.0
+Redesigned this component.
+It allows creating multiple pipeline instances by one type, 
+and the relationships of them are made by `Id` and `ParentId` properties of `IPipeline`.
+
+### 0.0.3
+It will find all types inherited from `IPipeline` and initialize them by .Net Core DI Container.
+The first pipeline(randomly) who resolves the current `HttpContext` will be the **current pipeline**,
+And you can do something awesome with this pipeline.
 
 ## Contribution
 

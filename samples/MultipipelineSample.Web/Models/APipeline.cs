@@ -13,7 +13,7 @@ namespace MultipipelineSample.Web.Models
     {
         public string Id { get; } = "Id-A";
         public string ParentId { get; } = "Id-Default";
-        public string Name { get; set; } = "A";
+        public string Name { get; } = "A";
 	    public Task<bool> ResolveAsync(HttpContext ctx)
 	    {
 			return Task.FromResult(ctx.Request.Query.ContainsKey("a"));

@@ -1,21 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LazyMortal.Multipipeline", "src\LazyMortal.Multipipeline\LazyMortal.Multipipeline.xproj", "{81A94E14-B026-45FE-AF22-6E6E5E20B99C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{25B9C683-97B5-41BC-8277-35C3FA3590B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A0CD6262-113D-4ED2-AF78-4B7AF64173BC}"
 	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7C90330F-D65F-44B2-8433-74378FEDC888}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MultipipelineSample.Web", "samples\MultipipelineSample.Web\MultipipelineSample.Web.xproj", "{A9B2E3D8-3081-45D4-ABC7-50929D2F237E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LazyMortal.Multipipeline", "src\LazyMortal.Multipipeline\LazyMortal.Multipipeline.csproj", "{81A94E14-B026-45FE-AF22-6E6E5E20B99C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultipipelineSample.Web", "samples\MultipipelineSample.Web\MultipipelineSample.Web.csproj", "{A9B2E3D8-3081-45D4-ABC7-50929D2F237E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +37,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{81A94E14-B026-45FE-AF22-6E6E5E20B99C} = {25B9C683-97B5-41BC-8277-35C3FA3590B3}
 		{A9B2E3D8-3081-45D4-ABC7-50929D2F237E} = {7C90330F-D65F-44B2-8433-74378FEDC888}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE454CC3-8ED0-4FF4-BBF3-CAB955912F02}
 	EndGlobalSection
 EndGlobal

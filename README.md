@@ -127,14 +127,16 @@ For further information, please see samples in repository.
 |Version|Release Date|Remark|
 |:-----:|:-----:|:-----:|
 |0.0.3|2017-03-27| - |
-|0.1.0|2017-10| - |
+|0.1.0-beta|2017-10-20| - |
 
 ## Release Notes
 
-### 0.1.0
-Redesigned this component.
+### 0.1.0-beta
+1. Redesigned this component.
 It allows creating multiple pipeline instances by one type, 
 and the relationships of them are made by `Id` and `ParentId` properties of `IPipeline`.
+2. Upgraded project files to VS2017.
+3. For compatible considering, some references(1.1.1) have been downgraded(1.1.0) which may used by projects with both **project.json** and **csproj**.
 
 ### 0.0.3
 It will find all types inherited from `IPipeline` and initialize them by .Net Core DI Container.

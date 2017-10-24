@@ -13,7 +13,7 @@ namespace MultipipelineSample.Web.Models
     {
         public string Id { get; } = "Id-Default";
         public string ParentId { get; } = null;
-        public virtual string Name { get; set; } = "Default";
+        public virtual string Name { get; } = "Default";
 
         public virtual Task<bool> ResolveAsync(HttpContext ctx)
         {

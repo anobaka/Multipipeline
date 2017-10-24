@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LazyMortal.Multipipeline
 {
-
 	public static class MultipipelineApplicationBuilderExtensions
 	{
 		/// <summary>
@@ -26,14 +25,14 @@ namespace LazyMortal.Multipipeline
 			return builder.AddMultipipeline<MultipipelineOptions>(defaultPipelineConfiguration);
 		}
 
-		/// <summary>
-		/// <typeparam name="TOptions">Options model inheriting from <see cref="MultipipelineOptions"/>, is used for custom features</typeparam>
-		/// </summary>
-		/// <typeparam name="TOptions"></typeparam>
-		/// <param name="builder"></param>
-		/// <param name="defaultPipelineConfiguration">You can set a default behavior than other pipelines, but it's not a truly pipeline.</param>
-		/// <returns></returns>
-		public static IApplicationBuilder AddMultipipeline<TOptions>(this IApplicationBuilder builder,
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TOptions">Options model inheriting from <see cref="MultipipelineOptions"/>, is used for custom features</typeparam>
+        /// <param name="builder"></param>
+        /// <param name="defaultPipelineConfiguration">You can set a default behavior than other pipelines, but it's not a truly pipeline.</param>
+        /// <returns></returns>
+        public static IApplicationBuilder AddMultipipeline<TOptions>(this IApplicationBuilder builder,
 			Action<IApplicationBuilder> defaultPipelineConfiguration = null)
 			where TOptions : MultipipelineOptions, new()
 		{

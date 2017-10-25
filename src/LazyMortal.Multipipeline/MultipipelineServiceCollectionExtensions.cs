@@ -19,7 +19,7 @@ namespace LazyMortal.Multipipeline
         public static IServiceCollection AddMultipipeline(this IServiceCollection services,
             IEnumerable<IPipeline> pipelines,
             Action<MultipipelineOptions> configureAction = null) =>
-            services.AddMultipipeline<MultipipelineOptions>(pipelines, configureAction);
+            services.AddMultipipeline<MultipipelineOptions>(t => pipelines, configureAction);
 
         /// <summary>
         /// 
@@ -33,20 +33,37 @@ namespace LazyMortal.Multipipeline
             IEnumerable<IPipeline> pipelines,
             Action<TOptions> configureAction = null) where TOptions : MultipipelineOptions, new()
         {
+            return services.AddMultipipeline(t => pipelines, configureAction);
+        }
+
+        public static IServiceCollection AddMultipipeline(this IServiceCollection services,
+            Func<IServiceProvider, IEnumerable<IPipeline>> implementationFactory,
+            Action<MultipipelineOptions> configureAction = null) =>
+            services.AddMultipipeline<MultipipelineOptions>(implementationFactory, configureAction);
+
+        public static IServiceCollection AddMultipipeline<TOptions>(this IServiceCollection services,
+            Func<IServiceProvider, IEnumerable<IPipeline>> implementationFactory,
+            Action<TOptions> configureAction = null) where TOptions : MultipipelineOptions, new()
+        {
             if (configureAction != null)
             {
                 services.Configure(configureAction);
             }
             services.AddSingleton<PipelineDecisionTree>();
-            var pipelinesList = pipelines.ToList();
-            var invalidPipelineIds = pipelinesList.GroupBy(t => t.Id).Where(t => t.Count() > 1).ToList();
-            if (invalidPipelineIds.Count > 0)
+
+            services.AddSingleton(p =>
             {
-                throw new ArgumentException(
-                    $"Pipelines with same id are found: {string.Join(", ", invalidPipelineIds.Select(t => $"[{t.Count()}]{t.Key}"))}",
-                    nameof(pipelines));
-            }
-            services.AddSingleton(new PipelineCollectionAccessor {Pipelines = pipelinesList});
+                var pipelines = implementationFactory(p);
+                var pipelinesList = pipelines.ToList();
+                var invalidPipelineIds = pipelinesList.GroupBy(t => t.Id).Where(t => t.Count() > 1).ToList();
+                if (invalidPipelineIds.Count > 0)
+                {
+                    throw new ArgumentException(
+                        $"Pipelines with same id are found: {string.Join(", ", invalidPipelineIds.Select(t => $"[{t.Count()}]{t.Key}"))}",
+                        nameof(pipelines));
+                }
+                return new PipelineCollectionAccessor {Pipelines = pipelinesList};
+            });
             return services;
         }
     }

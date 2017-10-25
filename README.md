@@ -42,27 +42,27 @@ public class APipeline : IPipeline
     public string Id { get; } = "Id-A";
     public string ParentId { get; } = "Id-Default";
     public string Name { get; set; } = "A";
-	public Task<bool> ResolveAsync(HttpContext ctx)
-	{
-		return Task.FromResult(ctx.Request.Query.ContainsKey("a"));
-	}
+    public Task<bool> ResolveAsync(HttpContext ctx)
+    {
+        return Task.FromResult(ctx.Request.Query.ContainsKey("a"));
+    }
 
-	public Task ConfigurePipeline(IApplicationBuilder app)
-	{
-		app.UseSession(new SessionOptions {CookieName = nameof(APipeline)});
-		// others' middleware & configuration
-		// eg.
-		//		LoggingMiddleware
-		//		AAuthenticationMiddleware
-		return TaskCache.CompletedTask;
-	}
+    public Task ConfigurePipeline(IApplicationBuilder app)
+    {
+        app.UseSession(new SessionOptions {CookieName = nameof(APipeline)});
+        // others' middleware & configuration
+        // eg.
+        //		LoggingMiddleware
+        //		AAuthenticationMiddleware
+        return TaskCache.CompletedTask;
+    }
 }
 
-    public class BPipeline : IPipeline
+public class BPipeline : IPipeline
 {
-	public string Id { get; }
-	public string ParentId { get; }
-	public string Name { get; }
+    public string Id { get; }
+    public string ParentId { get; }
+    public string Name { get; }
 
     public BPipeline(string id, string parentId, string name)
     {
@@ -71,20 +71,20 @@ public class APipeline : IPipeline
         Name = name;
     }
 
-	public Task<bool> ResolveAsync(HttpContext ctx)
-	{
-		return Task.FromResult(ctx.Request.Query.ContainsKey(Name));
-	}
+    public Task<bool> ResolveAsync(HttpContext ctx)
+    {
+        return Task.FromResult(ctx.Request.Query.ContainsKey(Name));
+    }
 
-	public Task ConfigurePipeline(IApplicationBuilder app)
-	{
-		app.UseSession(new SessionOptions { CookieName = Id });
-		// others' middleware & configuration
-		// eg.
-		//		LoggingMiddleware
-		//		AAuthenticationMiddleware
-		return TaskCache.CompletedTask;
-	}
+    public Task ConfigurePipeline(IApplicationBuilder app)
+    {
+        app.UseSession(new SessionOptions { CookieName = Id });
+        // others' middleware & configuration
+        // eg.
+        //		LoggingMiddleware
+        //		AAuthenticationMiddleware
+        return TaskCache.CompletedTask;
+    }
 }
 ```
 
@@ -126,10 +126,14 @@ For further information, please see samples in repository.
 
 |Version|Release Date|Remark|
 |:-----:|:-----:|:-----:|
-|0.0.3|2017-03-27| - |
+|0.1.0-beta2|2017-10-25| - |
 |0.1.0-beta|2017-10-20| - |
+|0.0.3|2017-03-27| - |
 
 ## Release Notes
+
+### 0.1.0-beta2
+1. Add implementationFactory support in dependency injection.
 
 ### 0.1.0-beta
 1. Redesigned this component.

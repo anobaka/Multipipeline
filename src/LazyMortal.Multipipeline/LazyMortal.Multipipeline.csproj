@@ -4,7 +4,7 @@
     <Description>With Multipipeline we can create multiple context pipelines which can have different behaviors on same business code.</Description>
     <AssemblyTitle>LazyMortal.Multipipeline</AssemblyTitle>
     <VersionPrefix>0.1.0-beta</VersionPrefix>
-    <Authors>Jax</Authors>
+    <Authors>Jax, Anobaka</Authors>
     <TargetFramework>netstandard1.6</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>LazyMortal.Multipipeline</AssemblyName>
@@ -16,7 +16,8 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <PackageReleaseNotes>Redesign</PackageReleaseNotes>
+    <PackageReleaseNotes>Add implementationFactory support in dependency injection.</PackageReleaseNotes>
+    <Version>0.1.0-beta2</Version>
   </PropertyGroup>
 
   <ItemGroup>
